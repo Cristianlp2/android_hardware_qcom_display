@@ -682,6 +682,12 @@ void HWCDisplay::BuildLayerStack() {
       layer->flags.solid_fill = true;
     }
 
+#ifdef UDFPS_ZPOS
+    if (hwc_layer->IsFodPressed()) {
+      layer->flags.fod_pressed = true;
+    }
+#endif
+
     if (!hwc_layer->IsDataSpaceSupported()) {
       layer->flags.skip = true;
     }
@@ -718,10 +724,6 @@ void HWCDisplay::BuildLayerStack() {
     if (layer->input_buffer.flags.secure_display) {
       layer_stack_.flags.secure_present = true;
       is_secure = true;
-    }
-
-    if (IS_RGB_FORMAT(layer->input_buffer.format) && hwc_layer->IsScalingPresent()) {
-      layer_stack_.flags.scaling_rgb_layer_present = true;
     }
 
     if (hwc_layer->IsSingleBuffered() &&
@@ -1608,7 +1610,7 @@ HWC2::Error HWCDisplay::GetHdrCapabilities(uint32_t *out_num_types, int32_t *out
   }
 
   // We support HDR10, HLG and HDR10_PLUS.
-#endif /* TARGET_SUPPORTS_DOLBY_VISION */
+#endif /* TARGET_SUPPORTS_DOLBY_VISION */  
   if (out_types == nullptr) {
     *out_num_types = num_types;
   } else {

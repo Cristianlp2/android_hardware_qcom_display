@@ -19,6 +19,7 @@ dolby_vision_cc_defaults {
     },
 }
 
+
 cc_binary {
 
     name: "vendor.qti.hardware.display.composer-service",
